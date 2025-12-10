@@ -1,6 +1,6 @@
 import java.util.Scanner;
 
-public class PrestasiSederhana {
+public class PrestasiMahasiswa {
 
     static String[][] data = new String[100][5];
     static int count = 0;
