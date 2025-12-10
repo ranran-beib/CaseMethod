@@ -1,12 +1,13 @@
 import java.util.Scanner;
 
-public class PrestasiMahasiswa {
+public class PrestasiSederhana {
 
     static String[][] data = new String[100][5];
     static int count = 0;
     static Scanner sc = new Scanner(System.in);
 
     public static void main(String[] args) {
+
         int pilihan = -1;
 
         do {
@@ -15,17 +16,21 @@ public class PrestasiMahasiswa {
             System.out.println("2. Tampilkan Semua Prestasi");
             System.out.println("3. Analisis Berdasarkan Jenis");
             System.out.println("0. Keluar");
-            System.out.print("Pilih: ");
+            
+            String input;
+            while (true) {
+                System.out.print("Pilih: ");
+                input = sc.nextLine();
 
-            // VALIDASI AGAR MENU HARUS ANGKA
-            if (!sc.hasNextInt()) {
-                System.out.println("Input harus angka! Silakan ulangi.\n");
-                sc.nextLine(); // buang input salah
-                continue;
+                // cek apakah input hanya angka
+                if (input.matches("[0-9]+")) {
+                    pilihan = Integer.parseInt(input);
+                    break; // keluar dari loop validasi
+                } else {
+                    System.out.println("Input harus berupa angka! Ulangi.");
+                }
             }
-
-            pilihan = sc.nextInt();
-            sc.nextLine(); // buang enter
+            // =============================
 
             if (pilihan == 1) {
                 tambahPrestasi();
@@ -44,7 +49,6 @@ public class PrestasiMahasiswa {
 
     static void tambahPrestasi() {
 
-        // BATASAN: Data tidak boleh lebih dari 100
         if (count >= 100) {
             System.out.println("Data sudah penuh (maksimal 100). Tidak dapat menambahkan prestasi.\n");
             return;
@@ -52,17 +56,13 @@ public class PrestasiMahasiswa {
 
         System.out.println("--- Tambah Prestasi ---");
 
-        // VALIDASI NAMA TIDAK BOLEH KOSONG
         String nama;
         do {
             System.out.print("Nama: ");
             nama = sc.nextLine().trim();
-            if (nama.equals("")) {
-                System.out.println("Nama tidak boleh kosong!");
-            }
+            if (nama.equals("")) System.out.println("Nama tidak boleh kosong!");
         } while (nama.equals(""));
 
-        // VALIDASI NIM HARUS ANGKA
         String nim;
         do {
             System.out.print("NIM: ");
@@ -73,17 +73,13 @@ public class PrestasiMahasiswa {
             }
         } while (nim.equals(""));
 
-        // VALIDASI JENIS TIDAK BOLEH KOSONG
         String jenis;
         do {
             System.out.print("Jenis Prestasi: ");
             jenis = sc.nextLine().trim();
-            if (jenis.equals("")) {
-                System.out.println("Jenis prestasi tidak boleh kosong!");
-            }
+            if (jenis.equals("")) System.out.println("Jenis prestasi tidak boleh kosong!");
         } while (jenis.equals(""));
 
-        // VALIDASI TINGKAT HARUS 3 PILIHAN
         String tingkat;
         while (true) {
             System.out.print("Tingkat (Lokal/Nasional/Internasional): ");
@@ -98,7 +94,6 @@ public class PrestasiMahasiswa {
             }
         }
 
-        // VALIDASI TAHUN HARUS ANGKA & RANGE WAJAR
         String tahun;
         while (true) {
             System.out.print("Tahun: ");
@@ -118,7 +113,6 @@ public class PrestasiMahasiswa {
             }
         }
 
-        // SIMPAN DATA KE ARRAY
         data[count][0] = nama;
         data[count][1] = nim;
         data[count][2] = jenis;
@@ -153,14 +147,11 @@ public class PrestasiMahasiswa {
     static void analisisJenis() {
         System.out.println("--- Analisis Berdasarkan Jenis ---");
 
-        // VALIDASI JENIS TIDAK BOLEH KOSONG
         String jenisCari;
         do {
             System.out.print("Masukkan jenis prestasi: ");
             jenisCari = sc.nextLine().trim();
-            if (jenisCari.equals("")) {
-                System.out.println("Jenis prestasi tidak boleh kosong!");
-            }
+            if (jenisCari.equals("")) System.out.println("Jenis prestasi tidak boleh kosong!");
         } while (jenisCari.equals(""));
 
         int ditemukan = 0;
@@ -176,9 +167,4 @@ public class PrestasiMahasiswa {
         }
 
         if (ditemukan == 0) {
-            System.out.println("Tidak ditemukan prestasi dengan jenis tersebut.\n");
-        } else {
-            System.out.println("Total ditemukan: " + ditemukan + "\n");
-        }
-    }
-}
+            System.out.println("Tidak ditemukan prestasi dengan jeni
