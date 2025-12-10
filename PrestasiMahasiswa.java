@@ -30,7 +30,6 @@ public class PrestasiMahasiswa {
                     System.out.println("Input harus berupa angka! Ulangi.");
                 }
             }
-            // =============================
 
             if (pilihan == 1) {
                 tambahPrestasi();
@@ -167,4 +166,9 @@ public class PrestasiMahasiswa {
         }
 
         if (ditemukan == 0) {
-            System.out.println("Tidak ditemukan prestasi dengan jeni
+            System.out.println("Tidak ditemukan prestasi dengan jenis tersebut.\n");
+        } else {
+            System.out.println("Total ditemukan: " + ditemukan + "\n");
+        }
+    }
+}
