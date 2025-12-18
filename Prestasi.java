@@ -2,176 +2,170 @@ import java.util.Scanner;
 
 public class Prestasi {
 
-    static String[][] data = new String[100][5];
-    static int count = 0;
-    static Scanner sc = new Scanner(System.in);
-
     public static void main(String[] args) {
-        int pilihan = -1;
+
+        Scanner sc = new Scanner(System.in);
+
+        System.out.print("Masukkan jumlah maksimal data prestasi: ");
+        int max = sc.nextInt();
+        sc.nextLine();
+
+        String[][] data = new String[max][5];
+        int jumlah = 0;
+        int pilih;
 
         do {
-            System.out.println("=== MENU ===");
+            System.out.println("\n=== MENU PRESTASI ===");
             System.out.println("1. Tambah Prestasi");
-            System.out.println("2. Tampilkan Semua Prestasi");
-            System.out.println("3. Analisis Berdasarkan Jenis");
+            System.out.println("2. Tampilkan Prestasi");
+            System.out.println("3. Cari Berdasarkan Jenis");
             System.out.println("0. Keluar");
-            System.out.print("Pilih: ");
-
-            if (!sc.hasNextInt()) {
-                System.out.println("Input harus berupa angka!");
-                sc.nextLine();
-                continue;
-            }
-
-            pilihan = sc.nextInt();
+            System.out.print("Pilih menu: ");
+            pilih = sc.nextInt();
             sc.nextLine();
 
-            if (pilihan == 1) {
-                tambahPrestasi();
-            } else if (pilihan == 2) {
-                tampilkanSemua();
-            } else if (pilihan == 3) {
-                analisisJenis();
-            } else if (pilihan == 0) {
+            if (pilih == 1) {
+
+                if (jumlah >= max) {
+                    System.out.println("Data sudah penuh!");
+                } else {
+                    System.out.print("Nama Mahasiswa : ");
+                    data[jumlah][0] = sc.nextLine();
+
+                    String nim;
+                    String[] angka = {"0","1","2","3","4","5","6","7","8","9"};
+                    boolean validNIM;
+                    boolean sama;
+
+                    while (true) {
+                        System.out.print("NIM (16 digit angka): ");
+                        nim = sc.nextLine();
+
+                        if (nim.length() != 16) {
+                            System.out.println("NIM harus 16 digit!");
+                            continue;
+                        }
+
+                        validNIM = true;
+                        if (!validNIM) {
+                            System.out.println("NIM hanya boleh angka!");
+                            continue;
+                        }
+
+                        sama = false;
+                        for (int i = 0; i < jumlah; i++) {
+                            if (nim.equals(data[i][1])) {
+                                sama = true;
+                                break;
+                            }
+                        }
+
+                        if (sama) {
+                            System.out.println("NIM sudah terdaftar!");
+                        } else {
+                            break;
+                        }
+                    }
+
+                    data[jumlah][1] = nim;
+
+                    System.out.print("Jenis Prestasi : ");
+                    data[jumlah][2] = sc.nextLine();
+
+                    String tingkat;
+                    while (true) {
+                        System.out.print("Tingkat (Lokal/Nasional/Internasional): ");
+                        tingkat = sc.nextLine();
+                        
+                        if (tingkat.equalsIgnoreCase("Lokal") ||
+                        tingkat.equalsIgnoreCase("Nasional") ||
+                        tingkat.equalsIgnoreCase("Internasional")) {
+                            break;
+                        } else {
+                            System.out.println("Tingkat tidak valid!");
+                        }
+                    }
+                    data[jumlah][3] = tingkat;
+
+                    String tahun;
+                    String[] tahunValid = {
+                        "2010","2011","2012","2013","2014","2015",
+                        "2016","2017","2018","2019","2020","2021",
+                        "2022","2023","2024","2025"
+                    };
+
+                    boolean validTahun;
+
+                    while (true) {
+                        System.out.print("Tahun (2010 - 2025): ");
+                        tahun = sc.nextLine();
+                        validTahun = false;
+
+                        for (int i = 0; i < tahunValid.length; i++) {
+                            if (tahun.equals(tahunValid[i])) {
+                                validTahun = true;
+                                break;
+                            }
+                        }
+
+                        if (validTahun) {
+                            break;
+                        } else {
+                            System.out.println("Tahun tidak valid!");
+                        }
+                    }
+
+                    data[jumlah][4] = tahun;
+
+                    jumlah++;
+                    System.out.println("Data berhasil ditambahkan!");
+                }
+
+            } else if (pilih == 2) {
+
+                if (jumlah == 0) {
+                    System.out.println("Belum ada data prestasi.");
+                } else {
+                    System.out.println("\n--- DAFTAR PRESTASI ---");
+                    for (int i = 0; i < jumlah; i++) {
+                        System.out.println((i + 1) + ". "
+                                + data[i][0] + " | "
+                                + data[i][1] + " | "
+                                + data[i][2] + " | "
+                                + data[i][3] + " | "
+                                + data[i][4]);
+                    }
+                }
+
+            } else if (pilih == 3) {
+
+                System.out.print("Masukkan jenis prestasi: ");
+                String cari = sc.nextLine();
+                int ketemu = 0;
+
+                for (int i = 0; i < jumlah; i++) {
+                    if (data[i][2].equalsIgnoreCase(cari)) {
+                        System.out.println(data[i][0] + " - "
+                                + data[i][3] + " - "
+                                + data[i][4]);
+                        ketemu++;
+                    }
+                }
+
+                if (ketemu == 0) {
+                    System.out.println("Data tidak ditemukan.");
+                } else {
+                    System.out.println("Total data: " + ketemu);
+                }
+
+            } else if (pilih == 0) {
                 System.out.println("Program selesai.");
             } else {
-                System.out.println("Pilihan tidak valid!");
+                System.out.println("Menu tidak tersedia.");
             }
 
-        } while (pilihan != 0);
-    }
+        } while (pilih != 0);
 
-    static void tambahPrestasi() {
-
-        if (count >= 100) {
-            System.out.println("Data sudah penuh (maksimal 100).");
-            return;
-        }
-
-        System.out.println("--- Tambah Prestasi ---");
-
-        String nama;
-        do {
-            System.out.print("Nama: ");
-            nama = sc.nextLine();
-            if (nama.equals("")) System.out.println("Nama tidak boleh kosong!");
-        } while (nama.equals(""));
-
-        String nim;
-        do {
-            System.out.print("NIM: ");
-            nim = sc.nextLine();
-            if (!nim.matches("[0-9]+")) {
-                System.out.println("NIM harus berupa angka!");
-                nim = "";
-            }
-        } while (nim.equals(""));
-
-        String jenis;
-        do {
-            System.out.print("Jenis Prestasi: ");
-            jenis = sc.nextLine();
-            if (jenis.equals("")) System.out.println("Jenis prestasi tidak boleh kosong!");
-        } while (jenis.equals(""));
-
-        String tingkat;
-        while (true) {
-            System.out.print("Tingkat (Lokal/Nasional/Internasional): ");
-            tingkat = sc.nextLine();
-
-            if (tingkat.equalsIgnoreCase("Lokal") ||
-                tingkat.equalsIgnoreCase("Nasional") ||
-                tingkat.equalsIgnoreCase("Internasional")) {
-                break;
-            } else {
-                System.out.println("Tingkat harus: Lokal, Nasional, atau Internasional!");
-            }
-        }
-
-        String tahun;
-        while (true) {
-            System.out.print("Tahun: ");
-            tahun = sc.nextLine();
-
-            if (!tahun.matches("[0-9]+")) {
-                System.out.println("Tahun harus angka!");
-                continue;
-            }
-
-            int th = Integer.parseInt(tahun);
-
-            if (th >= 2010 && th <= 2025) {
-                break;
-            } else {
-                System.out.println("Tahun harus antara 2010 - 2025.");
-            }
-        }
-
-        data[count][0] = nama;
-        data[count][1] = nim;
-        data[count][2] = jenis;
-        data[count][3] = tingkat;
-        data[count][4] = tahun;
-
-        count++;
-
-        System.out.println("Data berhasil ditambahkan!\n");
-    }
-
-    static void tampilkanSemua() {
-        System.out.println("--- Daftar Prestasi ---");
-
-        if (count == 0) {
-            System.out.println("Belum ada data.");
-            return;
-        }
-
-        // Header tabel
-        System.out.printf("%-5s %-20s %-12s %-15s %-15s %-10s\n",
-                "No", "Nama", "NIM", "Jenis", "Tingkat", "Tahun");
-        System.out.println("-------------------------------------------------------------------------------");
-
-        // Isi tabel
-        for (int i = 0; i < count; i++) {
-            System.out.printf("%-5d %-20s %-12s %-15s %-15s %-10s\n",
-                    (i + 1),
-                    data[i][0],
-                    data[i][1],
-                    data[i][2],
-                    data[i][3],
-                    data[i][4]);
-        }
-
-        System.out.println("-------------------------------------------------------------------------------");
-        System.out.println("Total data: " + count + "\n");
-    }
-
-    static void analisisJenis() {
-        System.out.println("--- Analisis Berdasarkan Jenis ---");
-
-        String jenisCari;
-        do {
-            System.out.print("Masukkan jenis prestasi: ");
-            jenisCari = sc.nextLine();
-            if (jenisCari.equals("")) System.out.println("Jenis prestasi tidak boleh kosong!");
-        } while (jenisCari.equals(""));
-
-        int ditemukan = 0;
-
-        for (int i = 0; i < count; i++) {
-            if (data[i][2].equalsIgnoreCase(jenisCari)) {
-                System.out.println("Nama: " + data[i][0]
-                    + ", NIM: " + data[i][1]
-                    + ", Tingkat: " + data[i][3]
-                    + ", Tahun: " + data[i][4]);
-                ditemukan++;
-            }
-        }
-
-        if (ditemukan == 0) {
-            System.out.println("Tidak ditemukan prestasi dengan jenis tersebut.\n");
-        } else {
-            System.out.println("Total ditemukan: " + ditemukan + "\n");
-        }
+        sc.close();
     }
 }
